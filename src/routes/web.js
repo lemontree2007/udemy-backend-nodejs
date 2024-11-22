@@ -1,5 +1,9 @@
 const express = require("express");
-const { getHomePage, getSample } = require("../controllers/homeController");
+const {
+  getHomePage,
+  getSample,
+  postUser,
+} = require("../controllers/homeController");
 const router = express.Router();
 
 //khai báo routes
@@ -7,5 +11,7 @@ const router = express.Router();
 router.get("/", getHomePage);
 
 router.get("/sample", getSample);
+
+router.post("/create-user", postUser);
 
 module.exports = router;
