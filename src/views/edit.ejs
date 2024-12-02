@@ -1,0 +1,31 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="topnav">
+      <a href="/">Home</a>
+      <a href="/create">News</a>
+    </div>
+    <div class="wrapper-form">
+      <fieldset>
+        <legend>Update Users</legend>
+        <form action="/create-user" method="post">
+          <label for="fname">Email</label>
+          <input type="text" name="email" value="<%= userEdit.email %>" />
+
+          <label for="lname">Name</label>
+          <input type="text" name="name" value="<%= userEdit.name %>" />
+
+          <label for="country">City</label>
+          <input type="text" name="city" value="<%= userEdit.city %>" />
+
+          <input type="submit" value="Submit" />
+        </form>
+      </fieldset>
+    </div>
+  </body>
+</html>
