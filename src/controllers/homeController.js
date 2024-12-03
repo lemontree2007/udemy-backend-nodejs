@@ -2,7 +2,9 @@ const connection = require("../config/db");
 const {
   getAllUsers,
   getUserById,
+  createUser,
   updateUserById,
+  deleteUserById,
 } = require("../services/crudService");
 
 const getHomePage = async (req, res) => {
@@ -24,10 +26,7 @@ const getCreate = (req, res) => {
 
 const postUser = async (req, res) => {
   let { email, name, city } = req.body;
-  let [row, fields] = await connection.query(
-    `INSERT INTO Users (email, name, city) VALUES (?, ?, ?)`,
-    [email, name, city]
-  );
+  await createUser(email, name, city);
   res.redirect("/");
 };
 
@@ -36,6 +35,19 @@ const postUpdateUser = async (req, res) => {
   await updateUserById(email, name, city, userId);
   res.redirect("/");
 };
+
+const postDeleteUser = async (req, res) => {
+  const userId = req.params.id;
+  let user = await getUserById(userId);
+  res.render("delete.ejs", { userEdit: user });
+};
+
+const postHandleRemoveUser = async (req, res) => {
+  const id = req.body.userId;
+  await deleteUserById(id);
+  res.redirect("/");
+};
+
 module.exports = {
   getHomePage,
   getSample,
@@ -43,4 +55,6 @@ module.exports = {
   getCreate,
   getUpdate,
   postUpdateUser,
+  postDeleteUser,
+  postHandleRemoveUser,
 };
