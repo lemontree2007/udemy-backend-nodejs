@@ -90,3 +90,7 @@ input[type=text], select, textarea {
   }
   tr:hover {background-color: #ccc;}
   
+
+  .d-none {
+    display: none;
+  }
