@@ -1,0 +1,75 @@
+const { log } = require("console");
+const path = require("path");
+
+const uploadSingleFile = async (fileOject) => {
+  //save file public
+  let uploadPath = path.resolve(__dirname, "../public/images/upload");
+
+  let extName = path.extname(fileOject.name); // get extension
+
+  let baseName = path.basename(fileOject.name, extName); // get name
+
+  let finalName = `${baseName}-${Date.now()}${extName}`; // connect name timesteam extension image
+
+  let finalPath = `${uploadPath}/${finalName}`;
+
+  try {
+    await fileOject.mv(finalPath);
+    return {
+      status: "success",
+      path: finalName,
+      error: null,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      status: "failed",
+      path: null,
+      error: JSON.stringify(error),
+    };
+  }
+};
+
+const uploadMutipleFiles = async (filesArr) => {
+  try {
+    let uploadPath = path.resolve(__dirname, "../public/images/upload");
+    let resultArr = [];
+    let countSuccess = 0;
+    for (let i = 0; i < filesArr.length; i++) {
+      let extName = path.extname(filesArr[i].name); // get extension arr i
+      let baseName = path.basename(filesArr[i].name, extName); // get name arr i
+
+      let finalName = `${baseName}-${Date.now()}${extName}`; // connect name timesteam extension image
+
+      let finalPath = `${uploadPath}/${finalName}`;
+      try {
+        await filesArr[i].mv(finalPath);
+        resultArr.push({
+          status: "success",
+          path: finalName,
+          fileName: filesArr[i].name,
+          error: null,
+        });
+        countSuccess++;
+      } catch (err) {
+        resultArr.push({
+          status: "failed",
+          path: null,
+          fileName: filesArr[i].name,
+          error: JSON.stringify(err),
+        });
+      }
+    }
+    return {
+      countSuccess: countSuccess,
+      detail: resultArr,
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = {
+  uploadSingleFile,
+  uploadMutipleFiles,
+};
