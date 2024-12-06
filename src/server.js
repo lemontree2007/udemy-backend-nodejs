@@ -2,7 +2,8 @@ require("dotenv").config();
 const express = require("express"); //import express
 const configViewEngine = require("./config/viewEngine");
 const connection = require("./config/db");
-const webRouter = require("./routes/web");
+const webRoutes = require("./routes/web");
+const apiRoutes = require("./routes/api");
 const app = express(); // tạo express application
 const port = process.env.PORT || 8888; // init port
 app.use(express.json()); // Used to parse JSON bodies
@@ -10,7 +11,8 @@ app.use(express.urlencoded({ extended: true })); //Parse URL-encoded bodies
 //config template engine
 configViewEngine(app);
 // config router
-app.use("/", webRouter);
+app.use("/", webRoutes);
+app.use("/v1/api/", apiRoutes);
 
 (async () => {
   try {
