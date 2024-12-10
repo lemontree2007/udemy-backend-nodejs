@@ -1,5 +1,13 @@
 const { uploadSingleFile } = require("../services/fileService");
-const { createCustomerService, createArrayCustomerService, getCustomersService, updateCustomerService, deleteCustomerService } = require("../services/customerService");
+const {
+  createCustomerService,
+  createArrayCustomerService,
+  getCustomersService,
+  updateCustomerService,
+  deleteCustomerService,
+  deleteArrCustomerService,
+} = require("../services/customerService");
+
 const postCustomerAPI = async (req, res) => {
   let { name, address, phone, email, description } = req.body;
   let imageURL = "";
@@ -39,7 +47,15 @@ const postArrayCustomerAPI = async (req, res) => {
 };
 
 const getCustomersAPI = async (req, res) => {
-  let result = await getCustomersService();
+  let limit = req.query.limit;
+  let page = req.query.page;
+  let name = req.query.name;
+  let result = null;
+  if (limit && page) {
+    result = await getCustomersService(limit, page, name, req.query);
+  } else {
+    result = await getCustomersService();
+  }
   return res.status(200).json({
     error: 0,
     data: result,
@@ -48,7 +64,14 @@ const getCustomersAPI = async (req, res) => {
 
 const putCustomersAPI = async (req, res) => {
   let { name, address, phone, email, description, customerId } = req.body;
-  let result = await updateCustomerService(name, address, phone, email, description, customerId);
+  let result = await updateCustomerService(
+    name,
+    address,
+    phone,
+    email,
+    description,
+    customerId
+  );
   return res.status(200).json({
     error: 0,
     data: result,
@@ -56,8 +79,16 @@ const putCustomersAPI = async (req, res) => {
 };
 
 const deleteCustomerAPI = async (req, res) => {
-  const id = req.body.id;
-  let result = deleteCustomerService(id);
+  let id = req.body.id;
+  let result = await deleteCustomerService(id);
+  return res.status(200).json({
+    error: 0,
+    data: result,
+  });
+};
+const deleteArrCustomerAPI = async (req, res) => {
+  let ids = req.body.customerId;
+  let result = await deleteArrCustomerService(ids);
   return res.status(200).json({
     error: 0,
     data: result,
@@ -69,5 +100,6 @@ module.exports = {
   postArrayCustomerAPI,
   getCustomersAPI,
   putCustomersAPI,
-  deleteCustomerAPI
+  deleteCustomerAPI,
+  deleteArrCustomerAPI,
 };
