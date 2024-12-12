@@ -18,6 +18,21 @@ const {
   deleteCustomerAPI,
   deleteArrCustomerAPI,
 } = require("../controllers/customerController");
+
+const {
+  postCreateProjectAPI,
+  getProjectAPI,
+  putProjectAPI,
+  deleteProjectAPI,
+} = require("../controllers/projectController");
+
+const {
+  postCreateTaskAPI,
+  getTaskAPI,
+  uTaskAPI,
+  dTaskAPI,
+} = require("../controllers/taskController");
+
 routerAPI.get("/users", getUsersAPI);
 routerAPI.post("/users", postUserAPI);
 routerAPI.put("/users", putUserAPI);
@@ -32,6 +47,17 @@ routerAPI.get("/customers", getCustomersAPI);
 routerAPI.put("/customers", putCustomersAPI);
 routerAPI.delete("/customers", deleteCustomerAPI);
 routerAPI.delete("/customer-many", deleteArrCustomerAPI);
+
+//project router
+routerAPI.get("/projects", getProjectAPI);
+routerAPI.post("/projects", postCreateProjectAPI);
+routerAPI.put("/projects", putProjectAPI);
+routerAPI.delete("/projects", deleteProjectAPI);
+//task project
+routerAPI.post("/tasks", postCreateTaskAPI);
+routerAPI.get("/tasks", getTaskAPI);
+routerAPI.put("/tasks", uTaskAPI);
+routerAPI.delete("/tasks", dTaskAPI);
 
 routerAPI.get("/info", (req, res) => {
   console.log(req.query);
